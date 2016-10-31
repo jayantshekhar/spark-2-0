@@ -253,7 +253,7 @@ public class JavaSparkSQLExample {
         // $example on:schema_inferring$
         // Create an RDD of Person objects from a text file
         JavaRDD<Person> peopleRDD = spark.read()
-                .textFile("examples/src/main/resources/people.txt")
+                .textFile("src/main/resources/people.txt")
                 .javaRDD()
                 .map(new Function<String, Person>() {
                     @Override
