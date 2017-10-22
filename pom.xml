@@ -8,11 +8,11 @@
   <version>1.0</version>
 
     <properties>
-        <spark.version>2.0.1</spark.version>
+        <spark.version>2.1.0</spark.version>
         <hadoop.version>2.6.0</hadoop.version>
-	    <scala.minor.version>2.10</scala.minor.version>
-        <scala.version>2.10.6</scala.version>
-        <scala.binary.version>2.10</scala.binary.version>
+	<scala.minor.version>2.11</scala.minor.version>
+        <scala.version>2.11.8</scala.version>
+        <scala.binary.version>2.11</scala.binary.version>
     </properties>
 
   <dependencies>
