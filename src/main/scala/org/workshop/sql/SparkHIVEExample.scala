@@ -21,7 +21,7 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.SparkSession
 // $example off:spark_hive$
 
-object SparkHiveExample {
+object SparkHIVEExample {
 
   // $example on:spark_hive$
   case class Record(key: Int, value: String)
