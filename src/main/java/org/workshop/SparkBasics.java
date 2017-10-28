@@ -32,6 +32,8 @@ public final class SparkBasics {
 
         passingFunctions(jsc);
 
+        passingFunctions_1(jsc);
+
         spark.stop();
     }
 
@@ -43,19 +45,23 @@ public final class SparkBasics {
     }
 
     public static void readFile(JavaSparkContext jsc) {
-        JavaRDD<String> distFile = jsc.textFile("README", 1);
+        JavaRDD<String> distFile = jsc.textFile("README.md", 1);
+
+        distFile.collect().forEach(i -> System.out.println(i));
     }
 
     public static void readTransformAct(JavaSparkContext jsc) {
-        JavaRDD<String> lines = jsc.textFile("data.txt", 1);
+        JavaRDD<String> lines = jsc.textFile("data/Housing.csv", 1);
         JavaRDD<Integer> lineLengths = lines.map(s -> s.length());
+
+        lineLengths.collect().forEach(i -> System.out.println(i));
 
         int totalLength = lineLengths.reduce((a, b) -> a + b);
     }
 
 
     public static void passingFunctions(JavaSparkContext jsc) {
-        JavaRDD<String> lines = jsc.textFile("data.txt", 1);
+        JavaRDD<String> lines = jsc.textFile("data/Housing.csv", 1);
 
         JavaRDD<Integer> lineLengths = lines.map(new Function<String, Integer>() {
             public Integer call(String s) { return s.length(); }
@@ -66,4 +72,20 @@ public final class SparkBasics {
         });
 
     }
+
+    public static void passingFunctions_1(JavaSparkContext jsc) {
+        JavaRDD<String> lines = jsc.textFile("README.md");
+        JavaRDD<Integer> lineLengths = lines.map(new GetLength());
+        int totalLength = lineLengths.reduce(new Sum());
+
+        System.out.println("Total Length : "+totalLength);
+    }
+}
+
+
+class GetLength implements Function<String, Integer> {
+    public Integer call(String s) { return s.length(); }
+}
+class Sum implements Function2<Integer, Integer, Integer> {
+    public Integer call(Integer a, Integer b) { return a + b; }
 }
