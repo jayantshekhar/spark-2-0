@@ -19,6 +19,8 @@ import java.util.List;
 public final class SparkBasics {
 
     public static void main(String[] args) throws Exception {
+
+        System.out.println("Added a sysout");
         SparkSession spark = SparkSession
                 .builder()
                 .appName("SparkBasics").master("local")
