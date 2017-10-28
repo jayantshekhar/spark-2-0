@@ -1,11 +1,13 @@
 package org.workshop;
 
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.Function2;
 import org.apache.spark.rdd.RDD;
 import org.apache.spark.sql.SparkSession;
+import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,8 @@ public final class SparkBasics {
         passingFunctions(jsc);
 
         passingFunctions_1(jsc);
+
+        keyValuePairs(jsc);
 
         spark.stop();
     }
@@ -79,6 +83,14 @@ public final class SparkBasics {
         int totalLength = lineLengths.reduce(new Sum());
 
         System.out.println("Total Length : "+totalLength);
+    }
+
+    public static void keyValuePairs(JavaSparkContext jsc) {
+        JavaRDD<String> lines = jsc.textFile("README.md");
+        JavaPairRDD<String, Integer> pairs = lines.mapToPair(s -> new Tuple2(s, 1));
+        JavaPairRDD<String, Integer> counts = pairs.reduceByKey((a, b) -> a + b);
+
+        counts.collect().forEach(i -> System.out.println(i));
     }
 }
 
