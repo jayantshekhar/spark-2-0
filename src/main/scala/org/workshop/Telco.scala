@@ -84,6 +84,17 @@ object Telco {
     val sqlDF = spark.sql("SELECT * FROM telco where number_vmail_messages > 2")
     sqlDF.show()
 
+    // read in the data into a DataFrame
+    val state = spark.read.option("inferSchema", "true").option("header", "true").csv("data/state.csv")
+    state.printSchema()
+    state.show()
+
+    ds.createOrReplaceTempView("stateds")
+
+    //val joined = spark.sql("SELECT * FROM telco, stateds where telco.state = stateds.abbreviation")
+    val joined = ds.join(state, "state")
+    joined.show()
+
     spark.stop()
   }
 }
