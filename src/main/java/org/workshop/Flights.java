@@ -45,7 +45,7 @@ public class Flights {
 
     }
 
-    public static void rdd(SparkSession spark) {
+    public static void dataframe1(SparkSession spark) {
         // $example on:programmatic_schema$
         // Create an RDD
         JavaRDD<String> peopleRDD = spark.sparkContext()
