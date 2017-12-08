@@ -26,12 +26,22 @@ public class Flights {
         SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
-        rdd(spark);
+        rdd1(spark);
         //dataframe(spark);
     }
 
     public static void rdd1(SparkSession spark) {
         JavaRDD<Flight> flights = createRDD(spark, "data/flights_data_noheader.csv");
+
+        // count
+        long numOrigin = flights.map(new Function<Flight, String>() {
+            @Override
+            public String call(Flight r) {
+                return r.origin;
+            }
+        }).distinct().count();
+
+        System.out.println("Number of origins : " + numOrigin);
 
     }
 
