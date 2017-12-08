@@ -36,6 +36,8 @@ public class Flights {
     public static void rdd1(SparkSession spark) {
         JavaRDD<Flight> flights = createRDD(spark, "data/flights_data_noheader.csv");
 
+        JavaRDD<Airport> airports = createRDD1(spark, "data/airport_codes.csv");
+
         // count
         long numOrigin = flights.map(new Function<Flight, String>() {
             @Override
@@ -53,6 +55,18 @@ public class Flights {
                         return new Tuple2<>(s.origin, 1);
                     }
                 });
+
+
+        // count
+        long numAirports = airports.map(new Function<Airport, String>() {
+            @Override
+            public String call(Airport r) {
+                return r.code;
+            }
+        }).distinct().count();
+
+        System.out.println("Number of airports : " + numOrigin);
+
 
     }
 
