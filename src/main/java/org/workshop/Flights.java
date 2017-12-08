@@ -30,6 +30,11 @@ public class Flights {
         //dataframe(spark);
     }
 
+    public static void rdd1(SparkSession spark) {
+        JavaRDD<Flight> flights = createRDD(spark, "data/flights_data_noheader.csv");
+
+    }
+
     public static void rdd(SparkSession spark) {
         // $example on:programmatic_schema$
         // Create an RDD
@@ -127,4 +132,23 @@ public class Flights {
 
 
     }
+
+    public static JavaRDD<Flight> createRDD(SparkSession sparkSession, String inputFile) {
+
+        // create RDD
+        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();;
+
+        JavaRDD<Flight> flights = lines.map(new Function<String, Flight>() {
+            @Override
+            public Flight call(String s) throws Exception {
+                String[] arr = s.split(",");
+
+                // user::movie::rating
+                return new Flight(arr[0]);
+            }
+        });
+
+        return flights;
+    }
+
 }
