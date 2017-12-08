@@ -1,13 +1,16 @@
 package org.workshop;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,14 @@ public class Flights {
         }).distinct().count();
 
         System.out.println("Number of origins : " + numOrigin);
+
+        JavaPairRDD<String, Integer> ones = flights.mapToPair(
+                new PairFunction<Flight, String, Integer>() {
+                    @Override
+                    public Tuple2<String, Integer> call(Flight s) {
+                        return new Tuple2<>(s.origin, 1);
+                    }
+                });
 
     }
 
@@ -105,7 +116,7 @@ public class Flights {
 
         results = joinDataframe.select("ORIGIN");
         results.show();
-        
+
     }
 
     public static JavaRDD<Flight> createRDD(SparkSession sparkSession, String inputFile) {
@@ -125,5 +136,24 @@ public class Flights {
 
         return flights;
     }
+
+    public static JavaRDD<Airport> createRDD1(SparkSession sparkSession, String inputFile) {
+
+        // create RDD
+        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();;
+
+        JavaRDD<Airport> airports = lines.map(new Function<String, Airport>() {
+            @Override
+            public Airport call(String s) throws Exception {
+                String[] arr = s.split(",");
+
+                // user::movie::rating
+                return new Airport(arr[0]);
+            }
+        });
+
+        return airports;
+    }
+
 
 }
