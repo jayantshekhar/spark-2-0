@@ -9,9 +9,11 @@ import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.sql.SparkSession;
 import scala.Tuple2;
 
+import java.util.List;
+
 public class FlightsRDD {
 
-    public static void main(String[] args) throws  org.apache.spark.sql.AnalysisException {
+    public static void main(String[] args) throws org.apache.spark.sql.AnalysisException {
 
         Logger.getLogger("org").setLevel(Level.OFF);
         Logger.getLogger("akka").setLevel(Level.OFF);
@@ -19,13 +21,18 @@ public class FlightsRDD {
         SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
-        rdd1(spark);
-    }
+        JavaRDD<Airport> airports = createAirportsRDD(spark, "data/airport_codes.csv");
 
-    public static void rdd1(SparkSession spark) {
         JavaRDD<Flight> flights = createFlightsRDD(spark, "data/flights_data_noheader.csv");
 
-        JavaRDD<Airport> airports = createAirportsRDD(spark, "data/airport_codes.csv");
+        counts(spark, airports, flights);
+
+        displayRecords(spark, airports, flights);
+    }
+
+    public static void counts(SparkSession spark, JavaRDD<Airport> airports,
+                              JavaRDD<Flight> flights) {
+        System.out.println("Number of Flights : " + flights.count());
 
         // count
         long numCARRIER = flights.map(new Function<Flight, String>() {
@@ -46,11 +53,15 @@ public class FlightsRDD {
                 });
 
 
+        //----------------
+
+        System.out.println("Number of airports : " + airports.count());
+
         // count
         long numAirports = airports.map(new Function<Airport, String>() {
             @Override
             public String call(Airport r) {
-                return r.IATA;
+                return r.ICAO;
             }
         }).distinct().count();
 
@@ -62,7 +73,8 @@ public class FlightsRDD {
     public static JavaRDD<Flight> createFlightsRDD(SparkSession sparkSession, String inputFile) {
 
         // create RDD
-        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();;
+        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();
+        ;
 
         JavaRDD<Flight> flights = lines.map(new Function<String, Flight>() {
             @Override
@@ -80,14 +92,14 @@ public class FlightsRDD {
     public static JavaRDD<Airport> createAirportsRDD(SparkSession sparkSession, String inputFile) {
 
         // create RDD
-        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();;
+        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();
+        ;
 
         JavaRDD<Airport> airports = lines.map(new Function<String, Airport>() {
             @Override
             public Airport call(String s) throws Exception {
                 String[] arr = s.split(",");
 
-                // user::movie::rating
                 return new Airport(arr);
             }
         });
@@ -95,5 +107,31 @@ public class FlightsRDD {
         return airports;
     }
 
+    public static void displayRecords(SparkSession spark, JavaRDD<Airport> airports,
+                                      JavaRDD<Flight> flights) {
+
+        List<Airport> airportList = airports.collect();
+
+        int i = 0;
+        for (Airport airport : airportList) {
+            System.out.println(airport.toString());
+
+            if (i > 10)
+                break;
+            i++;
+        }
+
+        List<Flight> flightList = flights.collect();
+
+        i = 0;
+        for (Flight flight : flightList) {
+            System.out.println(flight.toString());
+
+            if (i > 10)
+                break;
+            i++;
+        }
+
+    }
 
 }

@@ -58,4 +58,9 @@ public class Airport implements Serializable {
         this.source = arr[13];
     }
 
+    public String toString() {
+        return " airportId : " + airportId +
+                " name : " + name;
+
+    }
 }

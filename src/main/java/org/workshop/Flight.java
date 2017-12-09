@@ -31,4 +31,10 @@ public class Flight implements Serializable{
         this.DISTANCE = arr[16];
     }
 
+    public String toString() {
+        return " CARRIER : " + CARRIER +
+                " ORIGIN : " + ORIGIN;
+
+    }
+
 }
