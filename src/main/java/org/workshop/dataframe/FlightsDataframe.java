@@ -4,13 +4,13 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Row;
-import org.apache.spark.sql.RowFactory;
-import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import org.workshop.Airport;
+import org.workshop.Flight;
+import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,8 @@ public class FlightsDataframe {
         Dataset<Row> airports = createAirportsDataframe(spark);
 
         Dataset<Row> flights = createFlightsDataframe(spark);
+
+        dataframeToDataset(spark, airports, flights);
 
         filter(spark, airports, flights);
 
@@ -114,7 +116,16 @@ public class FlightsDataframe {
     public static Dataset<Row> createAirportsDataframe(SparkSession spark) {
 
         Dataset<Row> airports = spark.read().option("header", "false").csv("data/airport_codes.csv");
-        airports = airports.withColumnRenamed("_c4", "ORIGIN");
+        airports.printSchema();
+
+        airports = airports.withColumnRenamed("_c0", "airportId");
+        airports = airports.withColumnRenamed("_c1", "name");
+        airports = airports.withColumnRenamed("_c2", "city");
+        airports = airports.withColumnRenamed("_c3", "country");
+        airports = airports.withColumnRenamed("_c4", "IATA");
+        airports = airports.withColumnRenamed("_c5", "ICAO");
+        airports = airports.withColumnRenamed("_c6", "latitude");
+        airports = airports.withColumnRenamed("_c7", "longitude");
 
         return airports;
     }
@@ -124,6 +135,24 @@ public class FlightsDataframe {
         Dataset<Row> flights = spark.read().option("header", "true").csv("data/flights_data.csv");
 
         return flights;
+    }
+
+    public static void dataframeToDataset(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
+
+        Encoder<Airport> airportEncoder = Encoders.bean(Airport.class);
+        Dataset<Airport> result = airports.as(airportEncoder);
+
+        List<Airport> resultList = result.collectAsList();
+
+        int i = 0;
+        for (Airport airport : resultList) {
+            System.out.println(airport.toString());
+
+            if (i > 10)
+                break;
+            i++;
+        }
+
     }
 
 }

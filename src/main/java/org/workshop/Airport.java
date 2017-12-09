@@ -26,20 +26,24 @@ Source	Source of this data. "OurAirports" for data sourced from OurAirports, "Le
      */
 public class Airport implements Serializable {
 
-    public String airportId;
-    public String name;
-    public String city;
-    public String country;
-    public String IATA;
-    public String ICAO;
-    public String latitude;
-    public String longitude;
-    public String altitude;
-    public String timezone;
-    public String DST;
-    public String tzDatabase;
-    public String type;
-    public String source;
+    private String airportId;
+    private String name;
+    private String city;
+    private String country;
+    private String IATA;
+    private String ICAO;
+    private String latitude;
+    private String longitude;
+    private String altitude;
+    private String timezone;
+    private String DST;
+    private String tzDatabase;
+    private String type;
+    private String source;
+
+    public Airport() {
+
+    }
 
     public Airport(String[] arr) {
 
@@ -67,5 +71,37 @@ public class Airport implements Serializable {
         return " IATA : " + IATA +
                 " name : " + name;
 
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setAirportId(String airportId) {
+        this.airportId = airportId;
+    }
+
+    public String getAirportId() {
+        return airportId;
+    }
+
+    public void setICAO(String ICAO) {
+        this.ICAO = ICAO;
+    }
+
+    public String getICAO() {
+        return ICAO;
+    }
+
+    public void setIATA(String IATA) {
+        this.IATA = IATA;
+    }
+
+    public String getIATA() {
+        return IATA;
     }
 }

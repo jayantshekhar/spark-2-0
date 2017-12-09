@@ -67,7 +67,7 @@ public class FlightsRDD {
         long numAirports = airports.map(new Function<Airport, String>() {
             @Override
             public String call(Airport r) {
-                return r.ICAO;
+                return r.getICAO();
             }
         }).distinct().count();
 
@@ -144,7 +144,7 @@ public class FlightsRDD {
                                       JavaRDD<Flight> flights) {
 
         JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
-                airport -> new Tuple2<>(airport.IATA, airport));
+                airport -> new Tuple2<>(airport.getIATA(), airport));
 
         /***
         JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
@@ -170,7 +170,7 @@ public class FlightsRDD {
 
         int i = 0;
         for (Tuple2<Flight,Airport> tuple : flightAirportList) {
-            System.out.println(tuple._1().CARRIER + " : "+ tuple._1().ORIGIN + " : " + tuple._2().name);
+            System.out.println(tuple._1().CARRIER + " : "+ tuple._1().ORIGIN + " : " + tuple._2().getName());
 
             if (i > 10)
                 break;
