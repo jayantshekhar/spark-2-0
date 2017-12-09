@@ -1,5 +1,7 @@
 package org.workshop.dataframe;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.sql.Dataset;
@@ -17,6 +19,9 @@ public class FlightsDataframe {
 
     public static void main(String[] args) throws org.apache.spark.sql.AnalysisException {
 
+        Logger.getLogger("org").setLevel(Level.OFF);
+        Logger.getLogger("akka").setLevel(Level.OFF);
+
         SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
@@ -26,9 +31,12 @@ public class FlightsDataframe {
 
         Dataset<Row> flights = createFlightsDataframe(spark);
 
+        filter(spark, airports, flights);
+
         counts(spark, airports, flights);
 
         joinAndSelect(spark, airports, flights);
+
     }
 
     public static void counts(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
@@ -93,6 +101,13 @@ public class FlightsDataframe {
 
         results = joinDataframe.select("ORIGIN", "TAIL_NUM", "_c1");
         results.show();
+
+    }
+
+    public static void filter(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
+
+        Dataset<Row> filtered = flights.filter("CARRIER == 'AA'");
+        filtered.show();
 
     }
 
