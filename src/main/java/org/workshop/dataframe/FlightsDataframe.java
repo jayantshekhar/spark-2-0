@@ -159,6 +159,7 @@ public class FlightsDataframe {
 
 
     public static void saveAndRead(SparkSession spark, Dataset<Row> flights) {
+        flights.show();
         flights
                 .write()
                 .partitionBy("CARRIER")
@@ -169,8 +170,8 @@ public class FlightsDataframe {
         flights.printSchema();
 
         Dataset<Row> parquetFileDF = spark.read().parquet("CARRIER.parquet");
-
-        parquetFileDF.show();
+        parquetFileDF.printSchema();
+        parquetFileDF.show(200);
 
     }
 }
