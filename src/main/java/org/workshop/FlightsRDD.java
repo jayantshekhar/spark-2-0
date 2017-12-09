@@ -29,6 +29,8 @@ public class FlightsRDD {
 
         displayRecords(spark, airports, flights);
 
+        distance(spark, flights);
+
         join(spark, airports, flights);
     }
 
@@ -140,12 +142,17 @@ public class FlightsRDD {
                                       JavaRDD<Flight> flights) {
 
         JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
+                airport -> new Tuple2<>(airport.IATA, airport));
+
+        /***
+        JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
                 new PairFunction<Airport, String, Airport>() {
                     @Override
                     public Tuple2<String, Airport> call(Airport airport) {
                         return new Tuple2<>(airport.IATA, airport);
                     }
                 });
+         ***/
 
         JavaPairRDD<String, Flight> flightPair = flights.mapToPair(
                 new PairFunction<Flight, String, Flight>() {
@@ -162,6 +169,26 @@ public class FlightsRDD {
         int i = 0;
         for (Tuple2<Flight,Airport> tuple : flightAirportList) {
             System.out.println(tuple._1().CARRIER + " : "+ tuple._1().ORIGIN + " : " + tuple._2().name);
+
+            if (i > 10)
+                break;
+            i++;
+        }
+    }
+
+    public static void distance(SparkSession spark,
+                            JavaRDD<Flight> flights) {
+
+        JavaPairRDD<String, Long> flightPair = flights.mapToPair(
+                flight -> new Tuple2<>(flight.TAIL_NUM, flight.DISTANCE));
+
+        JavaPairRDD<String, Long> distanceByTailNum = flightPair.reduceByKey((a, b) -> a+b);
+
+        List<Tuple2<String,Long>> totalDistanceByTailNum = distanceByTailNum.collect();
+
+        int i = 0;
+        for (Tuple2<String,Long> tuple : totalDistanceByTailNum) {
+            System.out.println(tuple._1() + " : "+ tuple._2());
 
             if (i > 10)
                 break;

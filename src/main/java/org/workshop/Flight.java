@@ -9,7 +9,9 @@ public class Flight implements Serializable{
 
     public String DAY_OF_MONTH,DAY_OF_WEEK,CARRIER,TAIL_NUM,FL_NUM,ORIGIN_AIRPORT_ID,ORIGIN,DEST_AIRPORT_ID,
             DEST,CRS_DEP_TIME,DEP_TIME,DEP_DELAY_NEW,
-            CRS_ARR_TIME,ARR_TIME,ARR_DELAY_NEW,CRS_ELAPSED_TIME,DISTANCE;
+            CRS_ARR_TIME,ARR_TIME,ARR_DELAY_NEW,CRS_ELAPSED_TIME;
+
+    public long DISTANCE;
 
     public Flight(String[] arr) {
         this.DAY_OF_MONTH = arr[0];
@@ -28,7 +30,7 @@ public class Flight implements Serializable{
         this.ARR_TIME = arr[13];
         this.ARR_DELAY_NEW = arr[14];
         this.CRS_ELAPSED_TIME = arr[15];
-        this.DISTANCE = arr[16];
+        this.DISTANCE = Long.parseLong(arr[16]);
     }
 
     public String toString() {
