@@ -31,6 +31,8 @@ public class FlightsDataframe {
 
         Dataset<Row> flights = createFlightsDataframe(spark);
 
+        save(spark, flights);
+
         dataframeToDataset(spark, airports, flights);
 
         filter(spark, airports, flights);
@@ -155,4 +157,14 @@ public class FlightsDataframe {
 
     }
 
+
+    public static void save(SparkSession session, Dataset<Row> flights) {
+        flights
+                .write()
+                .partitionBy("CARRIER")
+                .format("parquet")
+                .save("CARRIER.parquet");
+
+        flights.printSchema();
+    }
 }
