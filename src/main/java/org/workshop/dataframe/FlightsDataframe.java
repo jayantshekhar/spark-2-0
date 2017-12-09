@@ -31,7 +31,7 @@ public class FlightsDataframe {
 
         Dataset<Row> flights = createFlightsDataframe(spark);
 
-        save(spark, flights);
+        saveAndRead(spark, flights);
 
         dataframeToDataset(spark, airports, flights);
 
@@ -158,13 +158,19 @@ public class FlightsDataframe {
     }
 
 
-    public static void save(SparkSession session, Dataset<Row> flights) {
+    public static void saveAndRead(SparkSession spark, Dataset<Row> flights) {
         flights
                 .write()
                 .partitionBy("CARRIER")
                 .format("parquet")
+                .mode(SaveMode.Overwrite)
                 .save("CARRIER.parquet");
 
         flights.printSchema();
+
+        Dataset<Row> parquetFileDF = spark.read().parquet("CARRIER.parquet");
+
+        parquetFileDF.show();
+
     }
 }
