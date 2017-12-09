@@ -91,7 +91,7 @@ public class FlightsDataframe {
 
     public static void joinAndSelect(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
-        Dataset<Row> joinDataframe = flights.join(airports, "ORIGIN");
+        Dataset<Row> joinDataframe = flights.join(airports, flights.col("ORIGIN").equalTo(airports.col("IATA")));
         joinDataframe.show();
 
         // Creates a temporary view using the DataFrame
