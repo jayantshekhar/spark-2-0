@@ -98,10 +98,10 @@ public class FlightsDataframe {
         joinDataframe.createOrReplaceTempView("flights");
 
         // SQL can be run over a temporary view created using DataFrames
-        Dataset<Row> results = spark.sql("SELECT ORIGIN, TAIL_NUM, _c1  FROM flights");
+        Dataset<Row> results = spark.sql("SELECT ORIGIN, TAIL_NUM, IATA  FROM flights");
         results.show();
 
-        results = joinDataframe.select("ORIGIN", "TAIL_NUM", "_c1");
+        results = joinDataframe.select("ORIGIN", "TAIL_NUM", "IATA");
         results.show();
 
     }
