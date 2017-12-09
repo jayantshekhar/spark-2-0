@@ -22,24 +22,24 @@ public class FlightsDataframe {
         SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
+        createFlightsDataframeUsingSchema(spark);
+
         Dataset<Row> airports = createAirportsDataframe(spark);
 
         Dataset<Row> flights = createFlightsDataframe(spark);
 
-
         join(spark, airports, flights);
     }
 
-    public static void dataframe1(SparkSession spark) {
+    public static void createFlightsDataframeUsingSchema(SparkSession spark) {
         // $example on:programmatic_schema$
         // Create an RDD
-        JavaRDD<String> peopleRDD = spark.sparkContext()
-                .textFile("data/flights_data.csv", 1)
+        JavaRDD<String> flightsRDD = spark.sparkContext()
+                .textFile("data/flights_data_noheader.csv", 1)
                 .toJavaRDD();
 
         // The schema is encoded in a string
         //String schemaString = "DAY_OF_MONTH DAY_OF_WEEK CARRIER TAIL_NUM FL_NUM ORIGIN_AIRPORT_ID ORIGIN DEST_AIRPORT_ID DEST CRS_DEP_TIME DEP_TIME DEP_DELAY_NEW CRS_ARR_TIME ARR_TIME ARR_DELAY_NEW CRS_ELAPSED_TIME DISTANCE";
-
         String schemaString = "DAY_OF_MONTH DAY_OF_WEEK";
 
         // Generate the schema based on the string of schema
@@ -50,8 +50,8 @@ public class FlightsDataframe {
         }
         StructType schema = DataTypes.createStructType(fields);
 
-        // Convert records of the RDD (people) to Rows
-        JavaRDD<Row> rowRDD = peopleRDD.map(new Function<String, Row>() {
+        // Convert records of the RDD to Rows
+        JavaRDD<Row> rowRDD = flightsRDD.map(new Function<String, Row>() {
             @Override
             public Row call(String record) throws Exception {
                 String[] attributes = record.split(",");
