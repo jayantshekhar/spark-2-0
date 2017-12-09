@@ -34,9 +34,14 @@ public class FlightsDataframe {
     public static void counts(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
         flights.createOrReplaceTempView("flights");
 
-        Dataset<Row> results = flights.sqlContext().sql("SELECT COUNT(DISTINCT TAIL_NUM) from flights");
+        // count of distinct tail nums
+        Dataset<Row> distinctTailNums = flights.sqlContext().sql("SELECT COUNT(DISTINCT TAIL_NUM) from flights");
+        distinctTailNums.show();
 
-        results.show();
+        // number of flights per tailnum
+        Dataset<Row> numFlightsPerTailNum = flights.groupBy("TAIL_NUM").count();
+        numFlightsPerTailNum.show();
+
     }
 
     public static void createFlightsDataframeUsingSchema(SparkSession spark) {
