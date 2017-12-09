@@ -6,18 +6,16 @@ Java installed on the laptop
 
 ## Download Spark 2.2.0
 
-Download Spark 2.2.0 from here : http://spark.apache.org/downloads.html
+- Download Spark 2.2.0 from here : http://spark.apache.org/downloads.html
 
 ## Install Spark 2.2.0 on Mac
 
-tar -zxvf spark-2.2.0-bin-hadoop2.7.tgz
+- tar -zxvf spark-2.2.0-bin-hadoop2.7.tgz
 
-export PATH=$PATH:/Users/path_to_downloaded_spark/spark-2.2.0-bin-hadoop2.7/bin
+- export PATH=$PATH:/Users/path_to_downloaded_spark/spark-2.2.0-bin-hadoop2.7/bin
 
 ## Install Spark 2.2.0 on Windows
 
-Spark & WinUtils 
- 
 - Download Spark 2.2.0 from https://spark.apache.org/downloads.html
   - Accept default Spark release and package type - spark-2.2.0-bin-hadoop2.7.tgz file
   - If necessary download and install 7Zip program to extract .tgz files
