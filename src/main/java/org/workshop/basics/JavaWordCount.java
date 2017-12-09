@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.workshop;
+package org.workshop.basics;
 
 import scala.Tuple2;
 

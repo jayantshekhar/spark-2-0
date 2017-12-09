@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.workshop;
+package org.workshop.basics;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;

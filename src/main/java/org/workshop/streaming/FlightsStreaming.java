@@ -1,4 +1,4 @@
-package org.workshop;
+package org.workshop.streaming;
 
 import java.io.IOException;
 import java.io.Serializable;

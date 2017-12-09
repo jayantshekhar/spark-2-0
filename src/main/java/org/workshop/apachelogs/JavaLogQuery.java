@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.workshop;
+package org.workshop.apachelogs;
 
 import com.google.common.collect.Lists;
 import scala.Tuple2;

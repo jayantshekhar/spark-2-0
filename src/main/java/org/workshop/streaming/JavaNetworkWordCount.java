@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.workshop;
+package org.workshop.streaming;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package org.workshop;
+package org.workshop.broadcast;
 
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.broadcast.Broadcast;

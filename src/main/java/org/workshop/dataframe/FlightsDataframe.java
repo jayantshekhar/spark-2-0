@@ -1,4 +1,4 @@
-package org.workshop;
+package org.workshop.dataframe;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -10,6 +10,8 @@ import org.apache.spark.sql.*;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
+import org.workshop.Airport;
+import org.workshop.Flight;
 import scala.Tuple2;
 
 import java.util.ArrayList;

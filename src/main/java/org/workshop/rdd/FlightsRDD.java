@@ -1,4 +1,4 @@
-package org.workshop;
+package org.workshop.rdd;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -7,6 +7,8 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.sql.SparkSession;
+import org.workshop.Airport;
+import org.workshop.Flight;
 import scala.Tuple2;
 
 import java.util.List;
