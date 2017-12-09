@@ -1,4 +1,4 @@
-package org.workshop;
+package org.workshop.basics;
 
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
