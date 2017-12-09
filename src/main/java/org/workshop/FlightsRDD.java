@@ -28,6 +28,8 @@ public class FlightsRDD {
         counts(spark, airports, flights);
 
         displayRecords(spark, airports, flights);
+
+        join(spark, airports, flights);
     }
 
     public static void counts(SparkSession spark, JavaRDD<Airport> airports,
@@ -132,6 +134,39 @@ public class FlightsRDD {
             i++;
         }
 
+    }
+
+    public static void join(SparkSession spark, JavaRDD<Airport> airports,
+                                      JavaRDD<Flight> flights) {
+
+        JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
+                new PairFunction<Airport, String, Airport>() {
+                    @Override
+                    public Tuple2<String, Airport> call(Airport airport) {
+                        return new Tuple2<>(airport.IATA, airport);
+                    }
+                });
+
+        JavaPairRDD<String, Flight> flightPair = flights.mapToPair(
+                new PairFunction<Flight, String, Flight>() {
+                    @Override
+                    public Tuple2<String, Flight> call(Flight flight) {
+                        return new Tuple2<>(flight.ORIGIN, flight);
+                    }
+                });
+
+        JavaPairRDD<String, Tuple2<Flight, Airport>> flightAirportPair = flightPair.join(airportPair);
+
+        List<Tuple2<Flight,Airport>> flightAirportList = flightAirportPair.values().collect();
+
+        int i = 0;
+        for (Tuple2<Flight,Airport> tuple : flightAirportList) {
+            System.out.println(tuple._1().CARRIER + " : "+ tuple._1().ORIGIN + " : " + tuple._2().name);
+
+            if (i > 10)
+                break;
+            i++;
+        }
     }
 
 }

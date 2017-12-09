@@ -42,6 +42,11 @@ public class Airport implements Serializable {
     public String source;
 
     public Airport(String[] arr) {
+
+        for (int i=0; i<arr.length; i++) {
+            arr[i] = arr[i].replace('"', ' ').trim();
+        }
+
         this.airportId = arr[0];
         this.name = arr[1];
         this.city = arr[2];
@@ -59,7 +64,7 @@ public class Airport implements Serializable {
     }
 
     public String toString() {
-        return " airportId : " + airportId +
+        return " IATA : " + IATA +
                 " name : " + name;
 
     }
