@@ -15,59 +15,14 @@ import scala.Tuple2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Flights {
+public class FlightsDataframe {
 
     public static void main(String[] args) throws  org.apache.spark.sql.AnalysisException {
-
-        //final SparkConf sparkConf = new SparkConf().setAppName("FlightData").setMaster("local");
-        //JavaSparkContext sc = new JavaSparkContext(sparkConf) ;
-
-        //RDD of flight data
-        //JavaRDD<String> flightRdd = sc.textFile("data/flights_data.csv");
-        //SQLContext sqlContext = new org.apache.spark.sql.SQLContext(sc);
 
         SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
-        rdd1(spark);
-        //dataframe(spark);
-    }
-
-    public static void rdd1(SparkSession spark) {
-        JavaRDD<Flight> flights = createRDD(spark, "data/flights_data_noheader.csv");
-
-        JavaRDD<Airport> airports = createRDD1(spark, "data/airport_codes.csv");
-
-        // count
-        long numOrigin = flights.map(new Function<Flight, String>() {
-            @Override
-            public String call(Flight r) {
-                return r.origin;
-            }
-        }).distinct().count();
-
-        System.out.println("Number of origins : " + numOrigin);
-
-        JavaPairRDD<String, Integer> ones = flights.mapToPair(
-                new PairFunction<Flight, String, Integer>() {
-                    @Override
-                    public Tuple2<String, Integer> call(Flight s) {
-                        return new Tuple2<>(s.origin, 1);
-                    }
-                });
-
-
-        // count
-        long numAirports = airports.map(new Function<Airport, String>() {
-            @Override
-            public String call(Airport r) {
-                return r.code;
-            }
-        }).distinct().count();
-
-        System.out.println("Number of airports : " + numOrigin);
-
-
+        dataframe(spark);
     }
 
     public static void dataframe1(SparkSession spark) {
@@ -144,7 +99,7 @@ public class Flights {
                 String[] arr = s.split(",");
 
                 // user::movie::rating
-                return new Flight(arr[0]);
+                return new Flight(arr);
             }
         });
 
@@ -161,8 +116,7 @@ public class Flights {
             public Airport call(String s) throws Exception {
                 String[] arr = s.split(",");
 
-                // user::movie::rating
-                return new Airport(arr[0]);
+                return new Airport(arr);
             }
         });
 
