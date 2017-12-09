@@ -1,30 +1,33 @@
 package org.workshop.dataframe;
 
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.PairFunction;
-import org.apache.spark.sql.*;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.RowFactory;
+import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.workshop.Airport;
 import org.workshop.Flight;
-import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FlightsDataframe {
 
-    public static void main(String[] args) throws  org.apache.spark.sql.AnalysisException {
+    public static void main(String[] args) throws org.apache.spark.sql.AnalysisException {
 
         SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
-        dataframe(spark);
+        Dataset<Row> airports = createAirportsDataframe(spark);
+
+        Dataset<Row> flights = createFlightsDataframe(spark);
+
+
+        join(spark, airports, flights);
     }
 
     public static void dataframe1(SparkSession spark) {
@@ -63,20 +66,10 @@ public class FlightsDataframe {
 
     }
 
-    public static void dataframe(SparkSession spark) {
+    public static void join(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
-        //create dataframe from csv file(flight_data)
-        Dataset<Row> flightDataframe = spark.read().option("header","true").csv("data/flights_data.csv");
-
-        flightDataframe.show();
-
-        Dataset<Row> airportCodesDataframe = spark.read().option("header","false").csv("data/airport_codes.csv");
-
-        airportCodesDataframe.show();
-        airportCodesDataframe = airportCodesDataframe.withColumnRenamed("_c4", "ORIGIN");
-        Dataset<Row> joinDataframe = flightDataframe.join(airportCodesDataframe, "ORIGIN");
+        Dataset<Row> joinDataframe = flights.join(airports, "ORIGIN");
         joinDataframe.show();
-
 
         // Creates a temporary view using the DataFrame
         joinDataframe.createOrReplaceTempView("flights");
@@ -90,40 +83,19 @@ public class FlightsDataframe {
 
     }
 
-    public static JavaRDD<Flight> createRDD(SparkSession sparkSession, String inputFile) {
+    public static Dataset<Row> createAirportsDataframe(SparkSession spark) {
 
-        // create RDD
-        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();;
-
-        JavaRDD<Flight> flights = lines.map(new Function<String, Flight>() {
-            @Override
-            public Flight call(String s) throws Exception {
-                String[] arr = s.split(",");
-
-                // user::movie::rating
-                return new Flight(arr);
-            }
-        });
-
-        return flights;
-    }
-
-    public static JavaRDD<Airport> createRDD1(SparkSession sparkSession, String inputFile) {
-
-        // create RDD
-        JavaRDD<String> lines = sparkSession.sparkContext().textFile(inputFile, 1).toJavaRDD();;
-
-        JavaRDD<Airport> airports = lines.map(new Function<String, Airport>() {
-            @Override
-            public Airport call(String s) throws Exception {
-                String[] arr = s.split(",");
-
-                return new Airport(arr);
-            }
-        });
+        Dataset<Row> airports = spark.read().option("header", "false").csv("data/airport_codes.csv");
+        airports = airports.withColumnRenamed("_c4", "ORIGIN");
 
         return airports;
     }
 
+    public static Dataset<Row> createFlightsDataframe(SparkSession spark) {
+
+        Dataset<Row> flights = spark.read().option("header", "true").csv("data/flights_data.csv");
+
+        return flights;
+    }
 
 }
