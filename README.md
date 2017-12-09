@@ -48,10 +48,10 @@ mvn clean package
 
 ## Execute
 
-hadoop fs -put README.md
-hadoop fs -put data
+- hadoop fs -put README.md
+- hadoop fs -put data
 
-spark2-submit --class org.workshop.SparkBasics --master yarn --deploy-mode client --executor-memory 1G  --num-executors 1 --executor-cores 1 target/spark-exercises-1.0-jar-with-dependencies.jar
+- spark2-submit --class org.workshop.SparkBasics --master yarn --deploy-mode client --executor-memory 1G  --num-executors 1 --executor-cores 1 target/spark-exercises-1.0-jar-with-dependencies.jar
 
 
 
