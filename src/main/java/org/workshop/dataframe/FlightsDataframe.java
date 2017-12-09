@@ -9,8 +9,6 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
-import org.workshop.Airport;
-import org.workshop.Flight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ public class FlightsDataframe {
 
         Dataset<Row> flights = createFlightsDataframe(spark);
 
-        join(spark, airports, flights);
+        joinAndSelect(spark, airports, flights);
     }
 
     public static void createFlightsDataframeUsingSchema(SparkSession spark) {
@@ -66,7 +64,7 @@ public class FlightsDataframe {
 
     }
 
-    public static void join(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
+    public static void joinAndSelect(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
         Dataset<Row> joinDataframe = flights.join(airports, "ORIGIN");
         joinDataframe.show();
@@ -75,10 +73,10 @@ public class FlightsDataframe {
         joinDataframe.createOrReplaceTempView("flights");
 
         // SQL can be run over a temporary view created using DataFrames
-        Dataset<Row> results = spark.sql("SELECT ORIGIN FROM flights");
+        Dataset<Row> results = spark.sql("SELECT ORIGIN, TAIL_NUM, _c1  FROM flights");
         results.show();
 
-        results = joinDataframe.select("ORIGIN");
+        results = joinDataframe.select("ORIGIN", "TAIL_NUM", "_c1");
         results.show();
 
     }
