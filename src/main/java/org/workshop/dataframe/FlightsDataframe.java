@@ -41,6 +41,7 @@ public class FlightsDataframe {
 
     }
 
+    // count the number of distinct tail nums and number of flights per tailnum
     public static void counts(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
         flights.createOrReplaceTempView("flights");
 
@@ -54,6 +55,7 @@ public class FlightsDataframe {
 
     }
 
+    // create flights dataframe by specifying the schema
     public static void createFlightsDataframeUsingSchema(SparkSession spark) {
         // $example on:programmatic_schema$
         // Create an RDD
@@ -89,6 +91,7 @@ public class FlightsDataframe {
 
     }
 
+    // join the 2 dataframes and perform a query on it
     public static void joinAndSelect(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
         Dataset<Row> joinDataframe = flights.join(airports, flights.col("ORIGIN").equalTo(airports.col("IATA")));
@@ -106,6 +109,7 @@ public class FlightsDataframe {
 
     }
 
+    // filter records
     public static void filter(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
         // filter records for CARRIER == AA
@@ -116,6 +120,7 @@ public class FlightsDataframe {
         filtered.show();
     }
 
+    // create airport dataframe
     public static Dataset<Row> createAirportsDataframe(SparkSession spark) {
 
         Dataset<Row> airports = spark.read().option("header", "false").csv("data/airport_codes.csv");
@@ -133,6 +138,7 @@ public class FlightsDataframe {
         return airports;
     }
 
+    // create flights dataframe
     public static Dataset<Row> createFlightsDataframe(SparkSession spark) {
 
         Dataset<Row> flights = spark.read().option("header", "true").csv("data/flights_data.csv");
@@ -140,6 +146,7 @@ public class FlightsDataframe {
         return flights;
     }
 
+    // convert dataframe to dataset
     public static void dataframeToDataset(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
         Encoder<Airport> airportEncoder = Encoders.bean(Airport.class);
@@ -158,7 +165,7 @@ public class FlightsDataframe {
 
     }
 
-
+    // save the dataframe as parquet files and read them back
     public static void saveAndRead(SparkSession spark, Dataset<Row> flights) {
         flights.show();
         flights
