@@ -9,8 +9,6 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.workshop.Airport;
-import org.workshop.Flight;
-import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,9 +108,12 @@ public class FlightsDataframe {
 
     public static void filter(SparkSession spark, Dataset<Row> airports, Dataset<Row> flights) {
 
+        // filter records for CARRIER == AA
         Dataset<Row> filtered = flights.filter("CARRIER == 'AA'");
         filtered.show();
 
+        filtered = flights.filter("DEP_DELAY_NEW > 50");
+        filtered.show();
     }
 
     public static Dataset<Row> createAirportsDataframe(SparkSession spark) {

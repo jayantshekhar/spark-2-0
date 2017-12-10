@@ -5,6 +5,27 @@ import java.io.Serializable;
 /**
  * Created by jayant on 12/8/17.
  */
+
+/***
+ DAY_OF_MONTH : 1
+ DAY_OF_WEEK : 3
+ CARRIER : AA
+ TAIL_NUM : N338AA
+ FL_NUM : 1
+ ORIGIN_AIRPORT_ID : 12478
+ ORIGIN : JFK
+ DEST_AIRPORT_ID : 12892
+ DEST : LAX
+ CRS_DEP_TIME : 900
+ DEP_TIME : 914
+ DEP_DELAY_NEW : 14
+ CRS_ARR_TIME : 1225
+ ARR_TIME : 1238
+ ARR_DELAY_NEW : 13
+ CRS_ELAPSED_TIME : 385
+ DISTANCE : 2475
+***/
+
 public class Flight implements Serializable{
 
     public String DAY_OF_MONTH,DAY_OF_WEEK,CARRIER,TAIL_NUM,FL_NUM,ORIGIN_AIRPORT_ID,ORIGIN,DEST_AIRPORT_ID,
