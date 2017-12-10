@@ -1,17 +1,23 @@
 package org.workshop.broadcast;
 
+import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.sql.AnalysisException;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.util.LongAccumulator;
+import org.workshop.Airport;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Created by jayant on 10/28/17.
  */
 public class BroadcastVariables {
+
+    private static final Pattern SPACE = Pattern.compile(" ");
 
     public static void main(String[] args) throws AnalysisException {
 
@@ -22,18 +28,51 @@ public class BroadcastVariables {
 
         JavaSparkContext jsc = new JavaSparkContext(spark.sparkContext());
 
-        broadcast(jsc);
+        broadcast(spark, jsc);
 
         accululator(jsc);
 
         spark.stop();
     }
 
-    public static void broadcast(JavaSparkContext sc) {
+    public static void broadcast(SparkSession spark, JavaSparkContext sc) {
 
-        Broadcast<int[]> broadcastVar = sc.broadcast(new int[] {1, 2, 3});
+        String[] arr = new String[] {"an", "Spark"};
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        for (String temp : arr) {
+            hashMap.put(temp, 1);
+        }
 
-        int[] temp = broadcastVar.value();
+        Broadcast<HashMap<String, Integer>> broadcastVar = sc.broadcast(hashMap);
+
+        JavaRDD<String> lines = spark.read().textFile("README.md").javaRDD();
+
+        JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
+            @Override
+            public Iterator<String> call(String s) {
+
+                ArrayList<String> arrayList = new ArrayList<String>();
+
+                String[] temp = s.split(" ");
+                for (String str : temp) {
+                    if (broadcastVar.value().containsKey(str) == false) {
+                        arrayList.add(str);
+                    }
+                }
+
+                return arrayList.iterator();
+            }
+        });
+
+        int i = 0;
+        List<String> list = words.collect();
+        for (String str : list) {
+            System.out.println(str);
+
+            if (i > 100)
+                break;
+            i++;
+        }
 
     }
 
