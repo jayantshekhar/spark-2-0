@@ -25,43 +25,26 @@ public class FlightsStreaming implements Serializable{
 
     public static void main(String[] args) throws InterruptedException, IOException {
         Logger.getLogger("org.apache.spark").setLevel(Level.WARNING);
-        //JavaStreamingContext jssc = new JavaStreamingContext("spark://192.168.1.19:7077", "JavaWordCount",new Duration(1000));
         SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("JavaWordCount");
         JavaStreamingContext jssc = new JavaStreamingContext(conf,new Duration(1000));
-       /* SparkSession spark = SparkSession
-        		  .builder()
-        		  .appName("JavaStructuredNetworkWordCount")
-        		  .getOrCreate();
-        Dataset<Row> csvDF = spark
-        		  .readStream()
-        		  .format("com.databricks.spark.csv")
-        		  .option("sep", ",")
-        		  .load("data/");*/
 
-        JavaDStream<String> flightsData = jssc.textFileStream("data/").cache();
-
-        /*JavaDStream<String> words = flightsData.flatMap(
-        		  new FlatMapFunction<String, String>() {
-        			@Override
-        		    public Iterator<String> call(String s) {
-        		      return Arrays.asList(s.split("\n")).iterator();
-        		    }
-        });*/
+        JavaDStream<String> flightsData = jssc.textFileStream("data/flights").cache();
 
         flightsData.foreachRDD(new VoidFunction<JavaRDD<String>>() {
 
             public void call(JavaRDD<String> rdd) throws Exception {
                 List<String> output = rdd.collect();
-                System.out.println("Data Collected from files " + output);
+                System.out.println("Data Collected from files " + output.size());
                 return;
             }
 
         });
 
         flightsData.print();
+        
         jssc.start();
         jssc.awaitTermination();
-        //Files.move(Paths.get("flights_data_noheader.csv"), Paths.get("data/temp_flight_data1.txt"));
+
     }
 
 
