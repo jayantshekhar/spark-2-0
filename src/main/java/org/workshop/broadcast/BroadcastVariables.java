@@ -30,7 +30,7 @@ public class BroadcastVariables {
 
         broadcast(spark, jsc);
 
-        accululator(jsc);
+        accululator(spark, jsc);
 
         spark.stop();
     }
@@ -76,7 +76,7 @@ public class BroadcastVariables {
 
     }
 
-    public static void accululator(JavaSparkContext sc) {
+    public static void accululator(SparkSession spark, JavaSparkContext sc) {
 
         LongAccumulator accum = sc.sc().longAccumulator();
 
@@ -85,5 +85,24 @@ public class BroadcastVariables {
         Long value = accum.value();
 
         System.out.println("Accumulator Value : " + value);
+
+        //-----
+
+        LongAccumulator numCharactersAccum = sc.sc().longAccumulator();
+
+        JavaRDD<String> lines = spark.read().textFile("README.md").javaRDD();
+
+        JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
+            @Override
+            public Iterator<String> call(String s) {
+                numCharactersAccum.add(s.length());
+                return Arrays.asList(SPACE.split(s)).iterator();
+            }
+        });
+
+        words.count();
+
+        System.out.println("Total number of characters Value : " + numCharactersAccum.value());
+
     }
 }
