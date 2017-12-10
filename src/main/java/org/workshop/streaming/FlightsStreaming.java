@@ -26,22 +26,33 @@ public class FlightsStreaming implements Serializable{
     public static void main(String[] args) throws InterruptedException, IOException {
         Logger.getLogger("org.apache.spark").setLevel(Level.WARNING);
         SparkConf conf = new SparkConf().setMaster("local[2]").setAppName("JavaWordCount");
-        JavaStreamingContext jssc = new JavaStreamingContext(conf,new Duration(1000));
+        JavaStreamingContext jssc = new JavaStreamingContext(conf,new Duration(5000));
 
         JavaDStream<String> flightsData = jssc.textFileStream("data/flights").cache();
 
-        flightsData.foreachRDD(new VoidFunction<JavaRDD<String>>() {
+        flightsData.print();
 
-            public void call(JavaRDD<String> rdd) throws Exception {
-                List<String> output = rdd.collect();
-                System.out.println("Data Collected from files " + output.size());
-                return;
-            }
+        flightsData.foreachRDD((rdd, time) -> {
+            // Get the singleton instance of SparkSession
+            SparkSession spark = SparkSession.builder().config(rdd.context().getConf()).getOrCreate();
 
+            // Convert RDD[String] to RDD[case class] to DataFrame
+            JavaRDD<JavaRow> rowRDD = rdd.map(word -> {
+                JavaRow record = new JavaRow();
+                record.setWord(word);
+                return record;
+            });
+            Dataset<Row> wordsDataFrame = spark.createDataFrame(rowRDD, JavaRow.class);
+
+            // Creates a temporary view using the DataFrame
+            wordsDataFrame.createOrReplaceTempView("words");
+
+            // Do word count on table using SQL and print it
+            Dataset<Row> wordCountsDataFrame =
+                    spark.sql("select word, count(*) as total from words group by word");
+            wordCountsDataFrame.show();
         });
 
-        flightsData.print();
-        
         jssc.start();
         jssc.awaitTermination();
 
@@ -49,3 +60,5 @@ public class FlightsStreaming implements Serializable{
 
 
 }
+
+
