@@ -17,8 +17,8 @@ Java installed on the laptop
 ## Install Spark 2.2.0 on Windows
 
 - Download Spark 2.2.0 from https://spark.apache.org/downloads.html
-  - Accept default Spark release and package type - spark-2.2.0-bin-hadoop2.7.tgz file
-  - If necessary download and install 7Zip program to extract .tgz files
+
+- If necessary download and install 7Zip program to extract .tgz files
  
 - Extract spark-2.2.0-bin-hadoop2.7.tgz file
  
