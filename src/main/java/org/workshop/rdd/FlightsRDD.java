@@ -27,16 +27,16 @@ public class FlightsRDD {
 
         JavaRDD<Flight> flights = createFlightsRDD(spark, "data/flights_data_noheader.csv");
 
-        counts(spark, airports, flights);
+        countOfAirportsAndFlights(spark, airports, flights);
 
         displayRecords(spark, airports, flights);
 
-        distance(spark, flights);
+        totalDistanceByTailNum(spark, flights);
 
-        join(spark, airports, flights);
+        joinFlightsToAirports(spark, airports, flights);
     }
 
-    public static void counts(SparkSession spark, JavaRDD<Airport> airports,
+    public static void countOfAirportsAndFlights(SparkSession spark, JavaRDD<Airport> airports,
                               JavaRDD<Flight> flights) {
         System.out.println("Number of Flights : " + flights.count());
 
@@ -140,7 +140,7 @@ public class FlightsRDD {
 
     }
 
-    public static void join(SparkSession spark, JavaRDD<Airport> airports,
+    public static void joinFlightsToAirports(SparkSession spark, JavaRDD<Airport> airports,
                                       JavaRDD<Flight> flights) {
 
         JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
@@ -178,7 +178,7 @@ public class FlightsRDD {
         }
     }
 
-    public static void distance(SparkSession spark,
+    public static void totalDistanceByTailNum(SparkSession spark,
                             JavaRDD<Flight> flights) {
 
         JavaPairRDD<String, Long> flightPair = flights.mapToPair(
