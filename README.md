@@ -56,7 +56,7 @@ mvn clean package
 ## IDE
 
 - Install IntelliJ or Scala IDE for Eclipse
-  - https://www.jetbrains.com/idea/download/#section=mac
+  - https://www.jetbrains.com/idea/download
   - http://scala-ide.org/
   
 - Import this project as a Maven Project
