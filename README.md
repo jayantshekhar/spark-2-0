@@ -53,7 +53,13 @@ mvn clean package
 
 - spark2-submit --class org.workshop.SparkBasics --master yarn --deploy-mode client --executor-memory 1G  --num-executors 1 --executor-cores 1 target/spark-exercises-1.0-jar-with-dependencies.jar
 
+## IDE
 
+- Install IntelliJ or Scala IDE for Eclipse
+  - https://www.jetbrains.com/idea/download/#section=mac
+  - http://scala-ide.org/
+  
+- Import this project as a Maven Project
 
 
 
