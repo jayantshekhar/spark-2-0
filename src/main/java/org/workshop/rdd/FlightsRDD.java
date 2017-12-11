@@ -20,8 +20,19 @@ public class FlightsRDD {
         Logger.getLogger("org").setLevel(Level.OFF);
         Logger.getLogger("akka").setLevel(Level.OFF);
 
-        SparkSession spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
-                .getOrCreate();
+        SparkSession spark = null;
+
+        // for running on the cluster
+        if (args.length > 0) {
+            spark = SparkSession.builder().appName("FlightData").config("spark.some.config.option", "some-value")
+                    .getOrCreate();
+
+        }
+        // for running locally
+        else {
+            spark = SparkSession.builder().master("local").appName("FlightData").config("spark.some.config.option", "some-value")
+                    .getOrCreate();
+        }
 
         JavaRDD<Airport> airports = createAirportsRDD(spark, "data/airport_codes.csv");
 
