@@ -61,7 +61,7 @@ mvn clean package
   
 - Import this project as a Maven Project
 
-## Exercise
+## Exercise - RDD
 
 ### Churn Data
 
@@ -73,6 +73,22 @@ state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vma
 - Number of people per state who churned and who did not churn
 - The first column indicates the state
 - The last column is the churn column
+
+## Exercise - Dataframes & Datasets
+
+### Flights & Airport Data
+
+### Find
+
+- Find the number of flights per ORIGIN airport which are delayed by more than 10 minutes
+- Find the total distance traveled per TAIL_NUM
+- Find the number of flights per ORIGIN airport which are delayed by more than 10 minutes. Also display the airport name
+
+## Exercies - Streaming
+
+### Find
+
+- Display all the flights delayed by more than 15 minutes
 
 
 
