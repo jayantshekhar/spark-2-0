@@ -18,6 +18,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Row;
 import org.apache.spark.streaming.Duration;
+import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.workshop.Flight;
@@ -30,6 +31,8 @@ public class FlightsStreaming implements Serializable{
         JavaStreamingContext jssc = new JavaStreamingContext(conf,new Duration(5000));
 
         JavaDStream<String> flightsData = jssc.textFileStream("data/flights").cache();
+
+        JavaDStream<String> windowFlightsData = flightsData.window(Durations.seconds(50));
 
         flightsData.print();
 
