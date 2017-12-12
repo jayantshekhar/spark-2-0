@@ -83,6 +83,11 @@ state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vma
 
 ## Exercies - Streaming
 
+### Data
+
+- Break up flights_data_noheader.csv into smaller files
+- Drop these files into the flights directory over time for feeding the streaming program.
+
 ### Find
 
 - Display all the flights delayed by more than 15 minutes
