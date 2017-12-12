@@ -61,9 +61,9 @@ mvn clean package
   
 - Import this project as a Maven Project
 
-## Exercise - RDD
+## Exercise - RDD / Dataframes / Datasets
 
-### Churn Data
+### Churn Data Columns
 
 state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vmail_messages	total_day_minutes	total_day_calls	total_day_charge	total_eve_minutes	total_eve_calls	total_eve_charge	total_night_minutes	total_night_calls	total_night_charge	total_intl_minutes	total_intl_calls	total_intl_charge	number_customer_service_calls	churned
 
@@ -71,10 +71,7 @@ state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vma
 
 - Number of people per state
 - Number of people per state who churned and who did not churn
-- The first column indicates the state
-- The last column is the churn column
-
-## Exercise - Dataframes & Datasets
+- Total number of day calls per state
 
 ### Flights & Airport Data
 
