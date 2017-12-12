@@ -71,6 +71,7 @@ state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vma
 
 - Number of people per state
 - Number of people per state who churned and who did not churn
+- The first column indicates the state
 - The last column is the churn column
 
 
