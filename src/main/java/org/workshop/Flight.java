@@ -32,6 +32,69 @@ public class Flight implements Serializable{
             DEST,CRS_DEP_TIME,DEP_TIME,DEP_DELAY_NEW,
             CRS_ARR_TIME,ARR_TIME,ARR_DELAY_NEW,CRS_ELAPSED_TIME;
 
+    public void setDAY_OF_MONTH(String DAY_OF_MONTH) {
+        this.DAY_OF_MONTH = DAY_OF_MONTH;
+    }
+    public String getDAY_OF_MONTH() {
+        return DAY_OF_MONTH;
+    }
+
+    public void setDAY_OF_WEEK(String DAY_OF_WEEK) {
+        this.DAY_OF_WEEK = DAY_OF_WEEK;
+    }
+    public String getDAY_OF_WEEK() {
+        return DAY_OF_WEEK;
+    }
+
+    public void setCARRIER(String CARRIER) {
+        this.CARRIER = CARRIER;
+    }
+    public String getCARRIER() {
+        return CARRIER;
+    }
+
+    public void setTAIL_NUM(String TAIL_NUM) {
+        this.TAIL_NUM = TAIL_NUM;
+    }
+    public String getTAIL_NUM() {
+        return TAIL_NUM;
+    }
+
+    public void setORIGIN(String ORIGIN) {
+        this.ORIGIN = ORIGIN;
+    }
+    public String getORIGIN() {
+        return ORIGIN;
+    }
+
+    public void setDEST(String DEST) {
+        this.DEST = DEST;
+    }
+    public String getDEST() {
+        return DEST;
+    }
+
+    public void setDEP_DELAY_NEW(String DEP_DELAY_NEW) {
+        this.DEP_DELAY_NEW = DEP_DELAY_NEW;
+    }
+    public String getDEP_DELAY_NEW() {
+        return DEP_DELAY_NEW;
+    }
+
+    public void setARR_DELAY_NEW(String ARR_DELAY_NEW) {
+        this.ARR_DELAY_NEW = ARR_DELAY_NEW;
+    }
+    public String getARR_DELAY_NEW() {
+        return ARR_DELAY_NEW;
+    }
+
+    public void setCRS_ELAPSED_TIME(String CRS_ELAPSED_TIME) {
+        this.CRS_ELAPSED_TIME = CRS_ELAPSED_TIME;
+    }
+    public String getCRS_ELAPSED_TIME() {
+        return CRS_ELAPSED_TIME;
+    }
+
     public long DISTANCE;
 
     public Flight(String[] arr) {

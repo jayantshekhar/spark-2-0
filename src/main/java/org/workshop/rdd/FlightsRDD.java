@@ -12,6 +12,7 @@ import org.workshop.Flight;
 import scala.Tuple2;
 
 import java.util.List;
+import java.util.Map;
 
 public class FlightsRDD {
 
@@ -127,7 +128,7 @@ public class FlightsRDD {
     public static void displayRecords(SparkSession spark, JavaRDD<Airport> airports,
                                       JavaRDD<Flight> flights) {
 
-        List<Airport> airportList = airports.collect();
+        List<Airport> airportList = airports.take(5);
 
         int i = 0;
         for (Airport airport : airportList) {
@@ -156,6 +157,12 @@ public class FlightsRDD {
 
         JavaPairRDD<String, Airport> airportPair = airports.mapToPair(
                 airport -> new Tuple2<>(airport.getIATA(), airport));
+
+        Map<String, Airport> map = airportPair.collectAsMap();
+
+        for (Map.Entry<String, Airport> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + ":" + entry.getValue().toString());
+        }
 
         /***
         JavaPairRDD<String, Airport> airportPair = airports.mapToPair(

@@ -20,6 +20,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
+import org.workshop.Flight;
 
 public class FlightsStreaming implements Serializable{
 
@@ -37,20 +38,21 @@ public class FlightsStreaming implements Serializable{
             SparkSession spark = SparkSession.builder().config(rdd.context().getConf()).getOrCreate();
 
             // Convert RDD[String] to RDD[case class] to DataFrame
-            JavaRDD<JavaRow> rowRDD = rdd.map(word -> {
-                JavaRow record = new JavaRow();
-                record.setWord(word);
-                return record;
+            JavaRDD<Flight> rowRDD = rdd.map(line -> {
+                Flight flight = new Flight(line.split(","));
+                return flight;
             });
-            Dataset<Row> wordsDataFrame = spark.createDataFrame(rowRDD, JavaRow.class);
+            Dataset<Row> flights = spark.createDataFrame(rowRDD, Flight.class);
 
             // Creates a temporary view using the DataFrame
-            wordsDataFrame.createOrReplaceTempView("words");
+            flights.createOrReplaceTempView("flights");
 
             // Do word count on table using SQL and print it
-            Dataset<Row> wordCountsDataFrame =
-                    spark.sql("select word, count(*) as total from words group by word");
-            wordCountsDataFrame.show();
+            Dataset<Row> tailNumCounts =
+                    spark.sql("select TAIL_NUM, count(*) as total from flights group by TAIL_NUM");
+
+            tailNumCounts.printSchema();
+            tailNumCounts.show();
         });
 
         jssc.start();

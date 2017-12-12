@@ -37,7 +37,7 @@ public class BroadcastVariables {
 
     public static void broadcast(SparkSession spark, JavaSparkContext sc) {
 
-        String[] arr = new String[] {"an", "Spark"};
+        String[] arr = new String[] {"an", "Spark", "Installation"};
         HashMap<String, Integer> hashMap = new HashMap<>();
         for (String temp : arr) {
             hashMap.put(temp, 1);
