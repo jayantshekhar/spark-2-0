@@ -53,6 +53,12 @@ public class FlightsStreaming implements Serializable{
 
             tailNumCounts.printSchema();
             tailNumCounts.show();
+
+            Dataset<Row> numFlightsFromOrigin =
+                    spark.sql("select ORIGIN, count(*) as total from flights group by ORIGIN");
+
+            numFlightsFromOrigin.printSchema();
+            numFlightsFromOrigin.show();
         });
 
         jssc.start();
