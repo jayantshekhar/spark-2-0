@@ -90,6 +90,8 @@ state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vma
 
 - Display all the flights delayed by more than 15 minutes
 - Display the number of flights from each ORIGIN airport
+- Display the number of flights from each ORIGIN airport, also display the airport name
+
 
 
 
