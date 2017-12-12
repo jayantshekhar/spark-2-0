@@ -56,10 +56,39 @@ mvn clean package
 ## IDE
 
 - Install IntelliJ or Scala IDE for Eclipse
-  - https://www.jetbrains.com/idea/download/#section=mac
+  - https://www.jetbrains.com/idea/download
   - http://scala-ide.org/
   
 - Import this project as a Maven Project
+
+## Exercise - RDD
+
+### Churn Data
+
+state	account_length	area_code	phone_number	intl_plan	voice_mail_plan	number_vmail_messages	total_day_minutes	total_day_calls	total_day_charge	total_eve_minutes	total_eve_calls	total_eve_charge	total_night_minutes	total_night_calls	total_night_charge	total_intl_minutes	total_intl_calls	total_intl_charge	number_customer_service_calls	churned
+
+### Find
+
+- Number of people per state
+- Number of people per state who churned and who did not churn
+- The first column indicates the state
+- The last column is the churn column
+
+## Exercise - Dataframes & Datasets
+
+### Flights & Airport Data
+
+### Find
+
+- Find the number of flights per ORIGIN airport which are delayed by more than 10 minutes
+- Find the total distance traveled per TAIL_NUM
+- Find the number of flights per ORIGIN airport which are delayed by more than 10 minutes. Also display the airport name
+
+## Exercies - Streaming
+
+### Find
+
+- Display all the flights delayed by more than 15 minutes
 
 
 
