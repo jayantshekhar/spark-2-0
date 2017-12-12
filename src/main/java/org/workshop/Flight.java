@@ -35,6 +35,39 @@ public class Flight implements Serializable{
     public void setDAY_OF_MONTH(String DAY_OF_MONTH) {
         this.DAY_OF_MONTH = DAY_OF_MONTH;
     }
+
+    public String getFL_NUM() {
+        return FL_NUM;
+    }
+
+    public String getORIGIN_AIRPORT_ID() {
+        return ORIGIN_AIRPORT_ID;
+    }
+
+    public String getDEST_AIRPORT_ID() {
+        return DEST_AIRPORT_ID;
+    }
+
+    public String getCRS_DEP_TIME() {
+        return CRS_DEP_TIME;
+    }
+
+    public String getDEP_TIME() {
+        return DEP_TIME;
+    }
+
+    public String getCRS_ARR_TIME() {
+        return CRS_ARR_TIME;
+    }
+
+    public String getARR_TIME() {
+        return ARR_TIME;
+    }
+
+    public long getDISTANCE() {
+        return DISTANCE;
+    }
+
     public String getDAY_OF_MONTH() {
         return DAY_OF_MONTH;
     }
@@ -123,4 +156,35 @@ public class Flight implements Serializable{
 
     }
 
+    public void setFL_NUM(String FL_NUM) {
+        this.FL_NUM = FL_NUM;
+    }
+
+    public void setORIGIN_AIRPORT_ID(String ORIGIN_AIRPORT_ID) {
+        this.ORIGIN_AIRPORT_ID = ORIGIN_AIRPORT_ID;
+    }
+
+    public void setDEST_AIRPORT_ID(String DEST_AIRPORT_ID) {
+        this.DEST_AIRPORT_ID = DEST_AIRPORT_ID;
+    }
+
+    public void setCRS_DEP_TIME(String CRS_DEP_TIME) {
+        this.CRS_DEP_TIME = CRS_DEP_TIME;
+    }
+
+    public void setDEP_TIME(String DEP_TIME) {
+        this.DEP_TIME = DEP_TIME;
+    }
+
+    public void setCRS_ARR_TIME(String CRS_ARR_TIME) {
+        this.CRS_ARR_TIME = CRS_ARR_TIME;
+    }
+
+    public void setARR_TIME(String ARR_TIME) {
+        this.ARR_TIME = ARR_TIME;
+    }
+
+    public void setDISTANCE(long DISTANCE) {
+        this.DISTANCE = DISTANCE;
+    }
 }
